@@ -18,7 +18,7 @@ python parse.py /Salt/pillar/dev/servers.sls out.txt 2219 hatamiarash7 Staging
 
 ## Output
 
-```ssh
+```text
 #------- Staging Servers ------#
 
 Host lab-edge-fra-hzr-1001
