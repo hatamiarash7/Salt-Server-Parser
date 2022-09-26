@@ -1,13 +1,15 @@
 # Salt Server Parser
 
+[![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
+
 Generate SSH config from Salt server lists
 
-## Usage
+## How to use
 
 Add/remove extra info from `parse.py` file. For example `IdentityFile`, `IdentityAgent`, etc and run:
 
 ```bash
-py parse.py <servers.sls> <output> <ssh port> <ssh user> <mode>
+python parse.py <servers.sls> <output> <ssh port> <ssh user> <mode>
 ```
 
 ## Example
