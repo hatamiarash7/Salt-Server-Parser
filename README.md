@@ -19,7 +19,7 @@ python main.py <servers.sls> <output> <ssh port> <ssh user> <mode>
 ## Example
 
 ```bash
-python main.py /Salt/pillar/dev/servers.sls out.txt 2219 hatamiarash7 Staging
+python main.py /Salt/pillar/dev/servers.sls out.txt 22 arash Staging
 ```
 
 ## Output
