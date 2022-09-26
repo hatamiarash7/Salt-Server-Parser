@@ -21,7 +21,7 @@ python parse.py /Salt/pillar/dev/servers.sls out.txt 2219 hatamiarash7 Staging
 ```text
 #------- Staging Servers ------#
 
-Host lab-edge-fra-hzr-1001
+Host lab-fra-hzr-1001
     HostName 1.2.3.4
     Port 2219
     User hatamiarash7
@@ -29,7 +29,7 @@ Host lab-edge-fra-hzr-1001
     IdentityAgent ~/.gnupg/S.gpg-agent.ssh
     IdentityFile ~/.ssh/id_rsa_yubikey.pub
 
-Host lab-edge-thr-at-1002
+Host lab-thr-at-1002
     HostName 4.5.6.7
     Port 2219
     User hatamiarash7
