@@ -1,6 +1,6 @@
 # Salt Server Parser
 
-[![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
+[![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/) [![GitHub release](https://img.shields.io/github/release/hatamiarash7/Salt-Server-Parser.svg)](https://GitHub.com/hatamiarash7/Salt-Server-Parser/releases/) [![Pylint](https://github.com/hatamiarash7/Salt-Server-Parser/actions/workflows/pylint.yml/badge.svg?branch=main)](https://github.com/hatamiarash7/Salt-Server-Parser/actions/workflows/pylint.yml)
 
 Generate SSH config from Salt server lists
 
