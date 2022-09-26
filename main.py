@@ -1,3 +1,7 @@
+"""
+This script will parse pillar file and generate a list of all servers for SSH
+"""
+
 import sys
 import json
 from ruamel.yaml import YAML
@@ -5,7 +9,7 @@ from pyfiglet import Figlet
 
 f = Figlet(font='standard')
 
-input = sys.argv[1]
+inputFile = sys.argv[1]
 output = sys.argv[2]
 port = sys.argv[3]
 user = sys.argv[4]
@@ -16,10 +20,14 @@ yaml = YAML(typ='safe')
 print(f.renderText('SSH Config Generator'))
 print("--> Start")
 
-count = 0
+COUNTER = 0
 ips = []
 
-with (open(output, 'w') as writer, open('ip-list.json', 'w') as ip_list, open(input, 'r') as stream):
+with (
+    open(file=output, mode='w', encoding='UTF-8') as writer,
+    open(file='ip-list.json', mode='w', encoding='UTF-8') as ip_list,
+    open(file=inputFile, mode='w', encoding='UTF-8') as stream
+):
     writer.write("#---------------------------------- " + mode +
                  " Servers ----------------------------------#\n\n")
     print("--> Load Salt file")
@@ -42,22 +50,8 @@ with (open(output, 'w') as writer, open('ip-list.json', 'w') as ip_list, open(in
             "\tIdentityAgent /Users/${USER}/.gnupg/S.gpg-agent.ssh\n")
         writer.write("\tIdentityFile ~/.ssh/id_rsa_yubikey.pub\n")
         writer.write("\n")
-        count = count+1
+        COUNTER = COUNTER+1
 
     json.dump(ips, ip_list)
 
-print("--> " + str(count) + " servers added")
-
-'''
-Sample:
-
-HOST <NAME>
-    HostName <IP>
-    Port <PORT>
-    User <USER>
-    PubkeyAuthentication yes
-    PreferredAuthentications publickey
-    IdentitiesOnly yes
-    IdentityAgent /Users/${USER}/.gnupg/S.gpg-agent.ssh
-    IdentityFile ~/.ssh/id_rsa_yubikey.pub
-'''
+print("--> " + str(COUNTER) + " servers added")
