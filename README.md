@@ -4,6 +4,10 @@
 
 Generate SSH config from Salt server lists
 
+## Requirements
+
+- Python 3.9+
+
 ## How to use
 
 Add/remove extra info from `main.py` file. For example `IdentityFile`, `IdentityAgent`, etc and run:
