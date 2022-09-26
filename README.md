@@ -6,16 +6,16 @@ Generate SSH config from Salt server lists
 
 ## How to use
 
-Add/remove extra info from `parse.py` file. For example `IdentityFile`, `IdentityAgent`, etc and run:
+Add/remove extra info from `main.py` file. For example `IdentityFile`, `IdentityAgent`, etc and run:
 
 ```bash
-python parse.py <servers.sls> <output> <ssh port> <ssh user> <mode>
+python main.py <servers.sls> <output> <ssh port> <ssh user> <mode>
 ```
 
 ## Example
 
 ```bash
-python parse.py /Salt/pillar/dev/servers.sls out.txt 2219 hatamiarash7 Staging
+python main.py /Salt/pillar/dev/servers.sls out.txt 2219 hatamiarash7 Staging
 ```
 
 ## Output
