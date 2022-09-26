@@ -37,3 +37,5 @@ Host lab-edge-thr-at-1002
     IdentityAgent ~/.gnupg/S.gpg-agent.ssh
     IdentityFile ~/.ssh/id_rsa_yubikey.pub
 ```
+
+Also, a `ip-list.json` file will be generated for further use containing all IPs in JSON format. For example whitelist them in WireGuard, etc.
