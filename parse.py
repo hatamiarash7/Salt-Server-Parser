@@ -1,4 +1,5 @@
 import sys
+import json
 from ruamel.yaml import YAML
 from pyfiglet import Figlet
 
@@ -16,28 +17,34 @@ print(f.renderText('SSH Config Generator'))
 print("--> Start")
 
 count = 0
+ips = []
 
-with open(output, 'w') as writer:
+with (open(output, 'w') as writer, open('ip-list.json', 'w') as ip_list, open(input, 'r') as stream):
     writer.write("#---------------------------------- " + mode +
                  " Servers ----------------------------------#\n\n")
-    with open(input, 'r') as stream:
-        print("--> Load Salt file")
-        out = yaml.load(stream)
-        print("--> Writing data")
-        for server in out['servers']:
-            writer.write("Host " + server + "\n")
-            writer.write("\tHostName " +
-                         out['servers'][server]['main_ip'] + "\n")
-            writer.write("\tPort " + port + "\n")
-            writer.write("\tUser " + user + "\n")
-            writer.write("\tPubkeyAuthentication yes\n")
-            writer.write("\tPreferredAuthentications publickey\n")
-            writer.write("\tIdentitiesOnly yes\n")
-            writer.write(
-                "\tIdentityAgent /Users/${USER}/.gnupg/S.gpg-agent.ssh\n")
-            writer.write("\tIdentityFile ~/.ssh/id_rsa_yubikey.pub\n")
-            writer.write("\n")
-            count = count+1
+    print("--> Load Salt file")
+    out = yaml.load(stream)
+    print("--> Writing data")
+
+    for server in out['servers']:
+        ip = out['servers'][server]['main_ip']
+
+        ips.append(ip + "/32")
+
+        writer.write("Host " + server + "\n")
+        writer.write("\tHostName " + ip + "\n")
+        writer.write("\tPort " + port + "\n")
+        writer.write("\tUser " + user + "\n")
+        writer.write("\tPubkeyAuthentication yes\n")
+        writer.write("\tPreferredAuthentications publickey\n")
+        writer.write("\tIdentitiesOnly yes\n")
+        writer.write(
+            "\tIdentityAgent /Users/${USER}/.gnupg/S.gpg-agent.ssh\n")
+        writer.write("\tIdentityFile ~/.ssh/id_rsa_yubikey.pub\n")
+        writer.write("\n")
+        count = count+1
+
+    json.dump(ips, ip_list)
 
 print("--> " + str(count) + " servers added")
 
