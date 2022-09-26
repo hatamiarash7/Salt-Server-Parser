@@ -154,3 +154,5 @@ cython_debug/
 # Others
 *.sls
 out.txt
+in.txt
+ip-list.json
