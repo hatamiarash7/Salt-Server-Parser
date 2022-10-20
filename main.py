@@ -26,7 +26,7 @@ ips = []
 with (
     open(file=output, mode='w', encoding='UTF-8') as writer,
     open(file='ip-list.json', mode='w', encoding='UTF-8') as ip_list,
-    open(file=inputFile, mode='w', encoding='UTF-8') as stream
+    open(file=inputFile, mode='r', encoding='UTF-8') as stream
 ):
     writer.write("#---------------------------------- " + mode +
                  " Servers ----------------------------------#\n\n")
