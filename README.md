@@ -10,6 +10,23 @@ Generate SSH config from Salt server lists
 
 ## How to use
 
+It's your `servers.sls` file:
+
+```salt
+servers:
+    lab-1001:
+        main_ip: 1.2.3.4
+        ...
+        ...
+    lab-1002:
+        main_ip: 4.5.6.7
+        ...
+        ...
+    ...
+    ...
+
+```
+
 Add/remove extra info from `main.py` file. For example `IdentityFile`, `IdentityAgent`, etc and run:
 
 ```bash
@@ -27,7 +44,7 @@ python main.py /Salt/pillar/dev/servers.sls out.txt 22 arash Staging
 ```text
 #------- Staging Servers ------#
 
-Host lab-fra-hzr-1001
+Host lab-1001
     HostName 1.2.3.4
     Port 22
     User arash
@@ -35,7 +52,7 @@ Host lab-fra-hzr-1001
     IdentityAgent ~/.gnupg/S.gpg-agent.ssh
     IdentityFile ~/.ssh/id_rsa_yubikey.pub
 
-Host lab-thr-at-1002
+Host lab-1002
     HostName 4.5.6.7
     Port 22
     User arash
