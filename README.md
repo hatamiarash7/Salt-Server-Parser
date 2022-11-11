@@ -27,7 +27,9 @@ servers:
 
 ```
 
-Add/remove extra info from `main.py` file. For example `IdentityFile`, `IdentityAgent`, etc and run:
+> **Note**: Add/remove extra info from `main.py` file. For example `IdentityFile`, `IdentityAgent`, etc
+
+Run:
 
 ```bash
 python main.py <servers.sls> <output> <ssh port> <ssh user> <mode>
@@ -47,7 +49,7 @@ python main.py /Salt/pillar/dev/servers.sls out.txt 22 arash Staging
 Host lab-1001
     HostName 1.2.3.4
     Port 22
-    User arash
+    User user
     IdentitiesOnly yes
     IdentityAgent ~/.gnupg/S.gpg-agent.ssh
     IdentityFile ~/.ssh/id_rsa_yubikey.pub
@@ -55,7 +57,7 @@ Host lab-1001
 Host lab-1002
     HostName 4.5.6.7
     Port 22
-    User arash
+    User user
     IdentitiesOnly yes
     IdentityAgent ~/.gnupg/S.gpg-agent.ssh
     IdentityFile ~/.ssh/id_rsa_yubikey.pub
