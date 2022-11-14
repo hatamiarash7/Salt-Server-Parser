@@ -48,7 +48,7 @@ with (
         writer.write("\tPreferredAuthentications publickey\n")
         writer.write("\tIdentitiesOnly yes\n")
         writer.write(
-            "\tIdentityAgent /run/user/1000/gnupg/S.gpg-agent.ssh\n")
+            "\tIdentityAgent /Users/${USER}/.gnupg/S.gpg-agent.ssh\n")
         writer.write("\tIdentityFile ~/.ssh/id_rsa_yubikey.pub\n")
         writer.write("\n")
         
