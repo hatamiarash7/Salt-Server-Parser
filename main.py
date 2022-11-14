@@ -21,6 +21,7 @@ print(f.renderText('SSH Config Generator'))
 print("--> Start")
 
 COUNTER = 0
+COUNTER_TINC = 0
 ips = []
 
 with (
@@ -47,11 +48,28 @@ with (
         writer.write("\tPreferredAuthentications publickey\n")
         writer.write("\tIdentitiesOnly yes\n")
         writer.write(
-            "\tIdentityAgent /Users/${USER}/.gnupg/S.gpg-agent.ssh\n")
+            "\tIdentityAgent /run/user/1000/gnupg/S.gpg-agent.ssh\n")
         writer.write("\tIdentityFile ~/.ssh/id_rsa_yubikey.pub\n")
         writer.write("\n")
+        
         COUNTER = COUNTER+1
+        
+        if 'tinc_ip' in out['servers'][server]:
+            tinc_ip = out['servers'][server]['tinc_ip']
+            writer.write("Host " + server + "-t\n")
+            writer.write("\tHostName " + tinc_ip + "\n")
+            writer.write("\tPort " + port + "\n")
+            writer.write("\tUser " + user + "\n")
+            writer.write("\tPubkeyAuthentication yes\n")
+            writer.write("\tPreferredAuthentications publickey\n")
+            writer.write("\tIdentitiesOnly yes\n")
+            writer.write(
+                "\tIdentityAgent /run/user/1000/gnupg/S.gpg-agent.ssh\n")
+            writer.write("\tIdentityFile ~/.ssh/id_rsa_yubikey.pub\n")
+            writer.write("\n")
+            
+            COUNTER_TINC = COUNTER_TINC+1
 
     json.dump(ips, ip_list)
 
-print("--> " + str(COUNTER) + " servers added")
+print("--> " + str(COUNTER) + " servers added" + " ( " + str(COUNTER_TINC) + " with Tinc IP )")
