@@ -29,8 +29,8 @@ with (
     open(file='ip-list.json', mode='w', encoding='UTF-8') as ip_list,
     open(file=inputFile, mode='r', encoding='UTF-8') as stream
 ):
-    writer.write("#---------------------------------- " + mode +
-                 " Servers ----------------------------------#\n\n")
+    writer.write("############################################ " + mode +
+                 " Servers ############################################\n\n")
     print("--> Load Salt file")
     out = yaml.load(stream)
     print("--> Writing data")
@@ -56,19 +56,20 @@ with (
         
         if 'tinc_ip' in out['servers'][server]:
             tinc_ip = out['servers'][server]['tinc_ip']
-            writer.write("Host " + server + "-t\n")
-            writer.write("\tHostName " + tinc_ip + "\n")
-            writer.write("\tPort " + port + "\n")
-            writer.write("\tUser " + user + "\n")
-            writer.write("\tPubkeyAuthentication yes\n")
-            writer.write("\tPreferredAuthentications publickey\n")
-            writer.write("\tIdentitiesOnly yes\n")
-            writer.write(
-                "\tIdentityAgent /run/user/1000/gnupg/S.gpg-agent.ssh\n")
-            writer.write("\tIdentityFile ~/.ssh/id_rsa_yubikey.pub\n")
-            writer.write("\n")
-            
-            COUNTER_TINC = COUNTER_TINC+1
+            if len(tinc_ip) > 0:
+                writer.write("Host " + server + "-t\n")
+                writer.write("\tHostName " + tinc_ip + "\n")
+                writer.write("\tPort " + port + "\n")
+                writer.write("\tUser " + user + "\n")
+                writer.write("\tPubkeyAuthentication yes\n")
+                writer.write("\tPreferredAuthentications publickey\n")
+                writer.write("\tIdentitiesOnly yes\n")
+                writer.write(
+                    "\tIdentityAgent /run/user/1000/gnupg/S.gpg-agent.ssh\n")
+                writer.write("\tIdentityFile ~/.ssh/id_rsa_yubikey.pub\n")
+                writer.write("\n")
+                
+                COUNTER_TINC = COUNTER_TINC+1
 
     json.dump(ips, ip_list)
 
