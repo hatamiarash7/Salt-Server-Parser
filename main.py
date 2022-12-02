@@ -23,10 +23,12 @@ print("--> Start")
 COUNTER = 0
 COUNTER_TINC = 0
 ips = []
+servers = []
 
 with (
     open(file=output, mode='w', encoding='UTF-8') as writer,
     open(file='ip-list.json', mode='w', encoding='UTF-8') as ip_list,
+    open(file='server-list.json', mode='w', encoding='UTF-8') as server_list,
     open(file=inputFile, mode='r', encoding='UTF-8') as stream
 ):
     writer.write("############################################ " + mode +
@@ -39,6 +41,7 @@ with (
         ip = out['servers'][server]['main_ip']
 
         ips.append(ip + "/32")
+        servers.append({'name': server, 'ip': ip})
 
         writer.write("Host " + server + "\n")
         writer.write("\tHostName " + ip + "\n")
@@ -48,12 +51,12 @@ with (
         writer.write("\tPreferredAuthentications publickey\n")
         writer.write("\tIdentitiesOnly yes\n")
         writer.write(
-            "\tIdentityAgent /Users/${USER}/.gnupg/S.gpg-agent.ssh\n")
+            "\tIdentityAgent /run/user/1000/gnupg/S.gpg-agent.ssh\n")
         writer.write("\tIdentityFile ~/.ssh/id_rsa_yubikey.pub\n")
         writer.write("\n")
-        
+
         COUNTER = COUNTER+1
-        
+
         if 'tinc_ip' in out['servers'][server]:
             tinc_ip = out['servers'][server]['tinc_ip']
             if len(tinc_ip) > 0:
@@ -68,9 +71,11 @@ with (
                     "\tIdentityAgent /run/user/1000/gnupg/S.gpg-agent.ssh\n")
                 writer.write("\tIdentityFile ~/.ssh/id_rsa_yubikey.pub\n")
                 writer.write("\n")
-                
+
                 COUNTER_TINC = COUNTER_TINC+1
 
     json.dump(ips, ip_list)
+    json.dump(servers, server_list)
 
-print("--> " + str(COUNTER) + " servers added" + " ( " + str(COUNTER_TINC) + " with Tinc IP )")
+print("--> " + str(COUNTER) + " servers added" +
+      " ( " + str(COUNTER_TINC) + " with Tinc IP )")
