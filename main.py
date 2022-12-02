@@ -24,6 +24,15 @@ servers = {}
 
 
 def _create_list(server, ip):
+    """Create a list of servers and IPs
+
+    The default format is: role-zone-provider-code
+
+    Args:
+        server (string): The server name
+        ip (string): The server IP
+    """
+
     ips.append(ip + "/32")
 
     name = server.split('-')
