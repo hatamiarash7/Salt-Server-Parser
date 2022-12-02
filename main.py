@@ -18,64 +18,94 @@ mode = sys.argv[5]
 yaml = YAML(typ='safe')
 
 print(f.renderText('SSH Config Generator'))
-print("--> Start")
 
-COUNTER = 0
-COUNTER_TINC = 0
 ips = []
-servers = []
+servers = {}
 
-with (
-    open(file=output, mode='w', encoding='UTF-8') as writer,
-    open(file='ip-list.json', mode='w', encoding='UTF-8') as ip_list,
-    open(file='server-list.json', mode='w', encoding='UTF-8') as server_list,
-    open(file=inputFile, mode='r', encoding='UTF-8') as stream
-):
-    writer.write("############################################ " + mode +
-                 " Servers ############################################\n\n")
-    print("--> Load Salt file")
-    out = yaml.load(stream)
-    print("--> Writing data")
 
-    for server in out['servers']:
-        ip = out['servers'][server]['main_ip']
+def _create_list(server, ip):
+    ips.append(ip + "/32")
 
-        ips.append(ip + "/32")
-        servers.append({'name': server, 'ip': ip})
+    name = server.split('-')
+    role = name[0]
 
-        writer.write("Host " + server + "\n")
-        writer.write("\tHostName " + ip + "\n")
-        writer.write("\tPort " + port + "\n")
-        writer.write("\tUser " + user + "\n")
-        writer.write("\tPubkeyAuthentication yes\n")
-        writer.write("\tPreferredAuthentications publickey\n")
-        writer.write("\tIdentitiesOnly yes\n")
-        writer.write(
-            "\tIdentityAgent /run/user/1000/gnupg/S.gpg-agent.ssh\n")
-        writer.write("\tIdentityFile ~/.ssh/id_rsa_yubikey.pub\n")
-        writer.write("\n")
+    servers.update({'other': {}}) if 'other' not in servers else None
 
-        COUNTER = COUNTER+1
+    if role in ['edge', 'monitoring', 'specto', 'prx']:
+        servers.update({role: {}}) if role not in servers else None
+        zone = name[1]
+        provider = name[2]
+        code = name[3]
 
-        if 'tinc_ip' in out['servers'][server]:
-            tinc_ip = out['servers'][server]['tinc_ip']
-            if len(tinc_ip) > 0:
-                writer.write("Host " + server + "-t\n")
-                writer.write("\tHostName " + tinc_ip + "\n")
-                writer.write("\tPort " + port + "\n")
-                writer.write("\tUser " + user + "\n")
-                writer.write("\tPubkeyAuthentication yes\n")
-                writer.write("\tPreferredAuthentications publickey\n")
-                writer.write("\tIdentitiesOnly yes\n")
-                writer.write(
-                    "\tIdentityAgent /run/user/1000/gnupg/S.gpg-agent.ssh\n")
-                writer.write("\tIdentityFile ~/.ssh/id_rsa_yubikey.pub\n")
-                writer.write("\n")
+        servers[role].update({zone: {}}) if zone not in servers[role] else None
+        servers[role][zone].update(
+            {provider: {}}) if provider not in servers[role][zone] else None
 
-                COUNTER_TINC = COUNTER_TINC+1
+        servers[role][zone][provider].update({code: ip})
+    else:
+        servers['other'].update({server: ip})
 
-    json.dump(ips, ip_list)
-    json.dump(servers, server_list)
 
-print("--> " + str(COUNTER) + " servers added" +
-      " ( " + str(COUNTER_TINC) + " with Tinc IP )")
+def generate():
+    print("--> Start")
+
+    COUNTER = 0
+    COUNTER_TINC = 0
+
+    with (
+        open(file=output, mode='w', encoding='UTF-8') as writer,
+        open(file='ip-list.json', mode='w', encoding='UTF-8') as ip_list,
+        open(file='server-list.json', mode='w', encoding='UTF-8') as server_list,
+        open(file=inputFile, mode='r', encoding='UTF-8') as stream
+    ):
+        writer.write("############################################ " + mode +
+                     " Servers ############################################\n\n")
+        print("--> Load Salt file")
+        out = yaml.load(stream)
+        print("--> Writing data")
+
+        for server in out['servers']:
+            ip = out['servers'][server]['main_ip']
+
+            _create_list(server, ip)
+
+            writer.write("Host " + server + "\n")
+            writer.write("\tHostName " + ip + "\n")
+            writer.write("\tPort " + port + "\n")
+            writer.write("\tUser " + user + "\n")
+            writer.write("\tPubkeyAuthentication yes\n")
+            writer.write("\tPreferredAuthentications publickey\n")
+            writer.write("\tIdentitiesOnly yes\n")
+            writer.write(
+                "\tIdentityAgent /run/user/1000/gnupg/S.gpg-agent.ssh\n")
+            writer.write("\tIdentityFile ~/.ssh/id_rsa_yubikey.pub\n")
+            writer.write("\n")
+
+            COUNTER = COUNTER+1
+
+            if 'tinc_ip' in out['servers'][server]:
+                tinc_ip = out['servers'][server]['tinc_ip']
+                if len(tinc_ip) > 0:
+                    writer.write("Host " + server + "-t\n")
+                    writer.write("\tHostName " + tinc_ip + "\n")
+                    writer.write("\tPort " + port + "\n")
+                    writer.write("\tUser " + user + "\n")
+                    writer.write("\tPubkeyAuthentication yes\n")
+                    writer.write("\tPreferredAuthentications publickey\n")
+                    writer.write("\tIdentitiesOnly yes\n")
+                    writer.write(
+                        "\tIdentityAgent /run/user/1000/gnupg/S.gpg-agent.ssh\n")
+                    writer.write("\tIdentityFile ~/.ssh/id_rsa_yubikey.pub\n")
+                    writer.write("\n")
+
+                    COUNTER_TINC = COUNTER_TINC+1
+
+        json.dump(ips, ip_list)
+        json.dump(servers, server_list)
+
+    print("--> " + str(COUNTER) + " servers added" +
+          " ( " + str(COUNTER_TINC) + " with Tinc IP )")
+
+
+if __name__ == "__main__":
+    generate()

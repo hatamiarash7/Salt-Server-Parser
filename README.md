@@ -63,4 +63,7 @@ Host lab-1002
     IdentityFile ~/.ssh/id_rsa_yubikey.pub
 ```
 
-Also, a `ip-list.json` file containing all IPs will be generated for further use. For example whitelist them in WireGuard, etc. See This project: [WireGuard-Config-Generator](https://github.com/hatamiarash7/WireGuard-Config-Generator)
+Also you will have two another files:
+
+- A `ip-list.json` file containing all IPs will be generated for further use. For example whitelist them in WireGuard, etc. See This project: [WireGuard-Config-Generator](https://github.com/hatamiarash7/WireGuard-Config-Generator)
+- A `server-list.json` file containing all servers with their IP baed on `role`, `zone`, `provider` and `code`. There is an `other` key for unknown servers. You can Change `__create_list()` function to fit your needs.
