@@ -7,7 +7,7 @@ import json
 from ruamel.yaml import YAML
 from pyfiglet import Figlet
 import toml
-
+import subprocess
 f = Figlet(font='standard')
 
 inputFile = sys.argv[1]
@@ -99,7 +99,8 @@ def generate():
         print("--> Load Salt file")
         out = yaml.load(stream)
         print("--> Writing data")
-
+        identityAgentPath = subprocess.run(["gpgconf" ,"--list-dirs", "agent-ssh-socket"], stdout=subprocess.PIPE).stdout.decode('utf-8')
+        print(identityAgentPath)
         for server in out['servers']:
             ip = out['servers'][server]['main_ip']
 
@@ -113,8 +114,7 @@ def generate():
             writer.write("\tPubkeyAuthentication yes\n")
             writer.write("\tPreferredAuthentications publickey\n")
             writer.write("\tIdentitiesOnly yes\n")
-            writer.write(
-                "\tIdentityAgent /run/user/1000/gnupg/S.gpg-agent.ssh\n")
+            writer.write("\t" + identityAgentPath)
             writer.write("\tIdentityFile ~/.ssh/id_rsa_yubikey.pub\n")
             writer.write("\n")
 
@@ -130,8 +130,7 @@ def generate():
                     writer.write("\tPubkeyAuthentication yes\n")
                     writer.write("\tPreferredAuthentications publickey\n")
                     writer.write("\tIdentitiesOnly yes\n")
-                    writer.write(
-                        "\tIdentityAgent /run/user/1000/gnupg/S.gpg-agent.ssh\n")
+                    writer.write("\t" + identityAgentPath)
                     writer.write("\tIdentityFile ~/.ssh/id_rsa_yubikey.pub\n")
                     writer.write("\n")
 
