@@ -10,7 +10,7 @@ jobs:
         python-version: ["3.9", "3.10"]
     steps:
       - name: Checkout project
-        uses: actions/checkout@1d96c772d19495a3b5c517cd2bc0cb401ea0529f # v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
