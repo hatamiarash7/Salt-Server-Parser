@@ -1,4 +1,4 @@
 ruamel.yaml==0.19.1
 pyfiglet==1.0.2
-pylint==4.0.4
+pylint==4.0.5
 toml==0.10.2
